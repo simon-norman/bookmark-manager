@@ -30,7 +30,7 @@ class Bookmarks < Sinatra::Base
 
   post '/bookmarks/:id/patch' do
     connection = PG.connect(dbname: 'bookmark_manager_test')
-    conection.exec("update bookmarks set url = '#{params['url']}', title = '#{params['title']}' where id = '#{params['id']}'")
+    connection.exec("update bookmarks set url = '#{params['url']}', title = '#{params['title']}' where id = '#{params['id']}'")
     redirect '/bookmarks'
   end
 
