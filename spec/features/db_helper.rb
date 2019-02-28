@@ -7,5 +7,6 @@ require 'pg'
 
   def create_bookmark(url, title)
     connection = PG.connect(dbname: 'bookmark_manager_test')
-    connection.exec("INSERT INTO bookmarks (url, title) VALUES ('#{url}', '#{title}');")
+    result = connection.exec("INSERT INTO bookmarks (url, title) VALUES ('#{url}', '#{title}') RETURNING id;")
+    result.first['id']
   end

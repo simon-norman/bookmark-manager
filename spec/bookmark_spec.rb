@@ -33,14 +33,14 @@ describe Bookmark do
 
   describe '#delete' do
     it 'deletes a bookmark from the database' do
-      bookmark = create_bookmark('http://www.makersacademy.com', 'Makers')
-      Bookmark.delete(bookmark[:id])
+      bookmark_id = create_bookmark('http://www.makersacademy.com', 'Makers')
+      
+      Bookmark.delete(bookmark_id)
 
-      retrieved_bookmark = {}
-      results = connection.exec "SELECT * FROM bookmarks where id = '#{id}'"
-      p results
-
-      expect(retrieved_bookmark).to eq(bookmark)
+      # retrieved_bookmark = {}
+      results = connection.exec "SELECT * FROM bookmarks where id = '#{bookmark_id}'"
+      
+      expect(results.values).to be_empty
     end
   end
 end
