@@ -1,46 +1,54 @@
 require 'bookmark'
 
 describe Bookmark do
-  let(:connection) {PG.connect(dbname: 'bookmark_manager_test')}
-  describe '#all' do
-    it 'returns all bookmarks' do
-      create_bookmark('http://www.makersacademy.com', 'Makers')
-      create_bookmark('http://www.destroyallsoftware.com', 'DAS')
+  let(:connection) { PG.connect(dbname: 'bookmark_manager_test') }
+  let(:bookmark1) { { url: 'http://www.makersacademy.com', title: 'Makers' } }
+  let(:bookmark2) { { url: 'http://www.destroyallsoftware.com', title: 'DAS' } }
 
+  describe '#all' do
+    before(:each) do
+      @bookmark1_id = create_bookmark(bookmark1[:url], bookmark1[:title])
+      @bookmark2_id = create_bookmark(bookmark2[:url], bookmark2[:title])
+    end
+
+    it 'returns all bookmarks' do
       bookmarks = Bookmark.all
 
-      expect(bookmarks.pop.url).to include("http://www.destroyallsoftware.com")
+      expect(bookmarks.length).to eq(2)
+    end
+
+    describe 'with each bookmark including' do
+      it 'title' do
+        expect(Bookmark.all.last.title).to eq(bookmark2[:title])
+      end
+
+      it 'url' do
+        expect(Bookmark.all.last.url).to eq(bookmark2[:url])
+      end
+
+      it 'id' do
+        expect(Bookmark.all.last.id).to eq(@bookmark2_id)
+      end
     end
   end
 
   describe '#create' do
     it 'adds a new bookmark url to the database' do
-      bookmark = {
-        url: 'https://github.com',
-        title: 'Github'
-      }
-      Bookmark.create(bookmark[:url], bookmark[:title])
+      Bookmark.create(bookmark1[:url], bookmark1[:title])
 
-      retrieved_bookmark = {}
-      results = connection.exec "SELECT * FROM bookmarks where url = '#{bookmark[:url]}'"
-      results.each do |row|
-        retrieved_bookmark.merge!(url: row['url'], title: row['title'])
-      end
-
-      expect(retrieved_bookmark).to eq(bookmark)
+      retrieved_bookmark = get_bookmark_by('url', bookmark1[:url])
+      expect(retrieved_bookmark).to eq(bookmark1)
     end
   end
 
   describe '#delete' do
     it 'deletes a bookmark from the database' do
-      bookmark_id = create_bookmark('http://www.makersacademy.com', 'Makers')
-      
+      bookmark_id = create_bookmark(bookmark1[:url], bookmark1[:title])
+
       Bookmark.delete(bookmark_id)
 
-      # retrieved_bookmark = {}
-      results = connection.exec "SELECT * FROM bookmarks where id = '#{bookmark_id}'"
-      
-      expect(results.values).to be_empty
+      retrieved_bookmark = get_bookmark_by('id', bookmark_id)
+      expect(retrieved_bookmark).to be_empty
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'pg'
 
 class Bookmark
-  attr_reader :url, :title
+  attr_reader :url, :title, :id
   def self.all
     @bookmark_array =[]
     if ENV['RACK_ENV'] == 'test'
@@ -11,7 +11,7 @@ class Bookmark
   end
     conn.exec( "SELECT * FROM bookmarks" ) do |result|
       result.each do |row|
-        @bookmark_array << Bookmark.new(row['url'],row['title'])
+        @bookmark_array << Bookmark.new(row['url'],row['title'], row['id'])
       end
     end
     @bookmark_array
@@ -26,9 +26,10 @@ class Bookmark
       conn.exec("INSERT INTO bookmarks (url, title) VALUES ('#{url}', '#{title}');")
   end
 
-  def initialize(url,title)
+  def initialize(url, title, id)
     @url = url
     @title = title
+    @id = id
   end
 
   def self.delete(id)
