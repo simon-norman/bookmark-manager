@@ -1,0 +1,5 @@
+<form action='/bookmarks/<%= @bookmark['id'] %>/patch' method='post'>
+  New Bookmark title: <input type='text' value="<%= @bookmark['title'] %>" name='title'>
+  New Bookmark URL: <input type='url' value="<%= @bookmark['url'] %>" name='url'>
+  <input type='submit' value='Update'>
+</form>

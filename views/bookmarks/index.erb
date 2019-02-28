@@ -7,6 +7,9 @@
       <form action='/bookmark/<%= bookmark.id %>/delete' method='post'>
         <input type='submit' value='Delete'>
       </form>
+      <form action='/bookmarks/<%= bookmark.id %>/update' method='get'>
+        <input type='submit' value='Edit'>
+      </form>
     </li>
     <% end %>
 
