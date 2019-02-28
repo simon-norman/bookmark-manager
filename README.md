@@ -50,3 +50,11 @@ As an internet user
 so that I can store pages that I want to visit
 I want to be able to add a bookmark to my list
 ```
+
+# Delete bookmarks
+
+```
+As an internet user
+So that I can keep my bookmarks list relevant and free of clutter
+I want to be able to remove a bookmark
+```

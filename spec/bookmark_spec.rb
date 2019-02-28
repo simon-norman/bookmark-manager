@@ -30,4 +30,17 @@ describe Bookmark do
       expect(retrieved_bookmark).to eq(bookmark)
     end
   end
+
+  describe '#delete' do
+    it 'deletes a bookmark from the database' do
+      bookmark = create_bookmark('http://www.makersacademy.com', 'Makers')
+      Bookmark.delete(bookmark[:id])
+
+      retrieved_bookmark = {}
+      results = connection.exec "SELECT * FROM bookmarks where id = '#{id}'"
+      p results
+
+      expect(retrieved_bookmark).to eq(bookmark)
+    end
+  end
 end
