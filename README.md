@@ -58,3 +58,11 @@ As an internet user
 So that I can keep my bookmarks list relevant and free of clutter
 I want to be able to remove a bookmark
 ```
+
+# Updating bookmarks
+
+```
+As an internet user
+So that I can amend an incorrect URL and title
+I want to be able to update a bookmark
+```
